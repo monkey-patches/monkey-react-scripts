@@ -1,0 +1,15 @@
+{
+  "name": "monkey-react-scripts",
+  "version": "0.0.1",
+  "description": "Monkey react script runner",
+  "main": "index.js",
+  "repository": "git@github.com:monkey-patches/monkey-react-scripts.git",
+  "author": "Seyyed Morteza Moosavi <se.mo.moosavi@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "monkey-react-scripts": "./bin/monkey-react-scripts.js"
+  },
+  "peerDependencies": {
+    "react-scripts": ">=0.9.0"
+  }
+}
