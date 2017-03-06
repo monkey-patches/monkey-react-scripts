@@ -5,6 +5,8 @@ var appPath = require('react-scripts/config/paths').appPath;
 
 process.env.NODE_ENV = 'development';
 
+require('dotenv').config({silent: true});
+
 var webpackMonkeyPath = path.resolve(appPath, 'webpack.monkey.js');
 var webpackConfig = require('react-scripts/config/webpack.config.dev');
 
