@@ -70,13 +70,40 @@ build
 │       └── logo.5d5d9eef.svg
 └── stats.html                      <-- new file
 ```
+### Decorator support
+If you love decorators, you can add decorator support:
+- install decorator plugin
+```
+npm install --save-dev babel-plugin-transform-decorators-legacy
+```
+- edit `webpack.monkey.js` like this:
+```js
+function findLoader(config, callback) {
+    var index = config.module.loaders.findIndex(callback);
+    if (index === -1) throw Error('Loader not found');
+    return config.module.loaders[index];
+}
 
+function addBabelPlugins(webpackConfig, plugins) {
+    var babelLoader = findLoader(webpackConfig, function (loader) {
+        return loader.loader === 'babel'
+    });
+    babelLoader.query.plugins = (babelLoader.query.plugins || []).concat(plugins);
+}
+
+module.exports = function (webpackConfig, isDevelopment) {
+    addBabelPlugins(webpackConfig, [
+        require.resolve('babel-plugin-transform-decorators-legacy')
+    ]);
+};
+```
+related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411], [#1357][1357]
 ## TODOs
 - [ ] add helpers
 - [ ] customize test runner (jest)
 - [ ] add more example
   - [ ] scss support
-  - [ ] decorator support
+  - [x] decorator support
   - [ ] relay support
 
 ## Thanks
@@ -85,3 +112,10 @@ build
 [create-react-app]: https://github.com/facebookincubator/create-react-app#tldr
 [webpack-visualizer]: https://github.com/chrisbateman/webpack-visualizer
 [configurable-react-scripts]: https://github.com/svrcekmichal/configurable-react-scripts
+
+[107]: https://github.com/facebookincubator/create-react-app/issues/107
+[167]: https://github.com/facebookincubator/create-react-app/issues/167
+[214]: https://github.com/facebookincubator/create-react-app/issues/214
+[309]: https://github.com/facebookincubator/create-react-app/issues/309
+[411]: https://github.com/facebookincubator/create-react-app/issues/411
+[1357]: https://github.com/facebookincubator/create-react-app/issues/1357
