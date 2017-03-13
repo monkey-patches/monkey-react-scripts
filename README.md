@@ -98,13 +98,36 @@ module.exports = function (webpackConfig, isDevelopment) {
 };
 ```
 related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411], [#1357][1357]
+
+### Relay support
+- install `babel-relay-plugin`:
+```
+npm install --save-dev babel-relay-plugin
+```
+- add `relayPlugin.js` file:
+```js
+const getBabelRelayPlugin = require('babel-relay-plugin');
+const schemaData = require('./graphql.schema.json');
+const relayPlugin = getBabelRelayPlugin(schemaData.data);
+module.exports = relayPlugin;
+```
+- edit `webpack.monkey.js` like this:
+```js
+/* copy findLoader, addBabelPlugins from decorator example */
+module.exports = function (webpackConfig, isDevelopment) {
+    addBabelPlugins(webpackConfig, [
+        require.resolve('./relayPlugin.js')
+    ]);
+};
+```
+related issues: [#462][462], [#662][662], [#900][900] 
 ## TODOs
 - [ ] add helpers
 - [ ] customize test runner (jest)
 - [ ] add more example
   - [ ] scss support
   - [x] decorator support
-  - [ ] relay support
+  - [x] relay support
 
 ## Thanks
 @svrcekmichal for [configurable-react-scripts][configurable-react-scripts]
@@ -119,3 +142,7 @@ related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411],
 [309]: https://github.com/facebookincubator/create-react-app/issues/309
 [411]: https://github.com/facebookincubator/create-react-app/issues/411
 [1357]: https://github.com/facebookincubator/create-react-app/issues/1357
+
+[462]: https://github.com/facebookincubator/create-react-app/issues/462
+[662]: https://github.com/facebookincubator/create-react-app/pull/662
+[900]: https://github.com/facebookincubator/create-react-app/issues/900
