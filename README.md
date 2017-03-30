@@ -147,7 +147,27 @@ module.exports = function (webpackConfig, isDevelopment) {
     ]);
 };
 ```
-related issues: [#462][462], [#662][662], [#900][900] 
+related issues: [#462][462], [#662][662], [#900][900]
+ 
+## scss support
+- install `node-sass` and `sass-loader`:
+
+```
+npm install --save-dev node-sass sass-loader
+```
+
+- edit `webpack.monkey.js` like this:
+```js
+/* copy addExclude, findLoader, addLoader, getScssLoader, createTextExtractor from snippets */
+module.exports = function (webpackConfig, isDevelopment) {
+    addExclude(webpackConfig, /\.scss$/);
+    addLoader(webpackConfig, getScssLoader(isDevelopment));
+};
+```
+similar code for less or stylus.
+
+related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509], [#1639][1639]
+
 ## TODOs
 - [ ] <del>add helpers</del> snippets
   - [x] addPlugin
@@ -181,3 +201,10 @@ related issues: [#462][462], [#662][662], [#900][900]
 [462]: https://github.com/facebookincubator/create-react-app/issues/462
 [662]: https://github.com/facebookincubator/create-react-app/pull/662
 [900]: https://github.com/facebookincubator/create-react-app/issues/900
+
+[78]: https://github.com/facebookincubator/create-react-app/issues/78
+[115]: https://github.com/facebookincubator/create-react-app/pull/115
+[351]: https://github.com/facebookincubator/create-react-app/issues/351
+[412]: https://github.com/facebookincubator/create-react-app/pull/412
+[1509]: https://github.com/facebookincubator/create-react-app/pull/1509
+[1639]: https://github.com/facebookincubator/create-react-app/issues/1639
