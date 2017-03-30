@@ -1,4 +1,7 @@
 # Code snippets for create-react-app 0.9.x
+useful codes you can copy and use in webpack.monkey.js file.
+
+In real project I copy some of them in other file and use require function:
 
 ## webpack plugin
 
@@ -27,6 +30,65 @@ function addBabelPlugins(webpackConfig, plugins) {
         return loader.loader === 'babel'
     });
     babelLoader.query.plugins = (babelLoader.query.plugins || []).concat(plugins);
+}
+
+```
+## addLoader
+```js
+function addLoader(webpackConfig, loader) {
+    webpackConfig.module.loaders.push(loader);
+}
+```
+
+## addExclude
+cra use url loader for all unknown files. 
+requirement: `findLoader`
+```js
+function addExclude(webpackConfig, regex) {
+    const loader = findLoader(webpackConfig, function(rule) {
+        return rule.loader === 'url'
+    });
+    loader.exclude.push(regex);
+}
+```
+
+## create extract text plugin
+
+```js
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const paths = require('react-scripts/config/paths');
+const publicPath = paths.servedPath;
+const shouldUseRelativeAssetPaths = publicPath === './';
+const cssFilename = 'static/css/[name].[contenthash:8].css';
+
+
+const createTextExtractor = function (fallback, use) {
+    const extractTextPluginOptions = {};
+    if (shouldUseRelativeAssetPaths) {
+        extractTextPluginOptions.publicPath = Array(cssFilename.split('/').length).join('../')
+    }
+
+    return ExtractTextPlugin.extract(fallback, use, extractTextPluginOptions);
+};
+
+```
+
+## scss config
+requirement: `createTextExtractor`
+
+```js
+function getScssLoader(isDevelopment) {
+
+    if (isDevelopment) {
+        return {
+            test: /\.scss$/,
+            loader: 'style!css?importLoaders=1!postcss!sass'
+        };
+    }
+    return {
+        test: /\.scss$/,
+        loader: createTextExtractor('style', 'css?importLoaders=1!postcss!sass'),
+    };
 }
 
 ```
