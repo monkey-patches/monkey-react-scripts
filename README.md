@@ -32,9 +32,17 @@ module.exports = function (webpackConfig, isDevelopment) {
   }
 ```
 
+## Snippets
+You can use [snippets](snippets/) if you want.
+
+snippets:
+- `addPlugin`
+- `findLoader`
+- `addBabelPlugins`
+
 ## Example 
 ### Webpack Visualizer
-I love visualization so I wan't add [webpack-visualizer-plugin][webpack-visualizer] to my project
+I love visualization so I add [webpack-visualizer-plugin][webpack-visualizer] to my project
 - install plugin:
 ```
 npm install webpack-visualizer-plugin --save-dev
@@ -76,7 +84,7 @@ If you love decorators, you can add decorator support:
 ```
 npm install --save-dev babel-plugin-transform-decorators-legacy
 ```
-- edit `webpack.monkey.js` like this:
+- edit `webpack.monkey.js` like this (copy `findLoader`, `addBabelPlugins` from [snippets](snippets/cra-0.9.x.md)):
 ```js
 function findLoader(config, callback) {
     var index = config.module.loaders.findIndex(callback);
@@ -122,9 +130,16 @@ module.exports = function (webpackConfig, isDevelopment) {
 ```
 related issues: [#462][462], [#662][662], [#900][900] 
 ## TODOs
-- [ ] add helpers
+- [ ] <del>add helpers</del> snippets
+  - [x] addPlugin
+  - [x] findLoader
+  - [x] addBabelPlugins
+  - [ ] extract text webpack plugin
+  - [ ] addExclude
+  - [ ] addLoader
 - [ ] customize test runner (jest)
 - [ ] add more example
+  - [ ] postcss
   - [ ] scss support
   - [x] decorator support
   - [x] relay support
