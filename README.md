@@ -1,6 +1,20 @@
 # monkey-react-scripts
-Monkey react script runner: Customize react-scripts webpack config without ejection or fork
+Monkey react script runner: Customize react-scripts webpack config without eject or fork
 
+Many of you want to add small change to your webpack config created by create-react-app. but you don't want to eject. or
+use other scripts like [configurable-react-scripts][configurable-react-scripts] or 
+[custom-react-scripts][custom-react-scripts] because of update delay.
+ 
+With monkey-react-scripts you can use react-scripts configs, but monkey patched one. so you always have updated
+react-scripts.
+
+## ☢ DANGER ☢
+
+> As [@gaearon](https://github.com/gaearon) mentioned multiple times there, it's not good idea to extend it. From my 
+point of view, I'm giving you gun, so try not to shot yourself, because probably nobody will help you. When you modify 
+something, be completely sure what you doing!
+
+[source][configurable-react-scripts]
 ## Usage
 - use create-react-app and create your project, [more-detail][create-react-app]
 ```
@@ -31,6 +45,11 @@ module.exports = function (webpackConfig, isDevelopment) {
     "test": "monkey-react-scripts test --env=jsdom"
   }
 ```
+
+## How it works
+I suggest you see [scripts](scripts) and [bin](bin) folders. (less than 100 line of code)
+
+Note: returned value of `require` function is mutable. so you can mutate that before real build/start script.
 
 ## Snippets
 You can use [snippets](snippets/) if you want.
@@ -150,6 +169,7 @@ related issues: [#462][462], [#662][662], [#900][900]
 [create-react-app]: https://github.com/facebookincubator/create-react-app#tldr
 [webpack-visualizer]: https://github.com/chrisbateman/webpack-visualizer
 [configurable-react-scripts]: https://github.com/svrcekmichal/configurable-react-scripts
+[custom-react-scripts]: https://github.com/kitze/custom-react-scripts
 
 [107]: https://github.com/facebookincubator/create-react-app/issues/107
 [167]: https://github.com/facebookincubator/create-react-app/issues/167
