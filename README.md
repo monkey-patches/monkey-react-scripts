@@ -149,7 +149,7 @@ module.exports = function (webpackConfig, isDevelopment) {
 ```
 related issues: [#462][462], [#662][662], [#900][900]
  
-## scss support
+### scss support
 - install `node-sass` and `sass-loader`:
 
 ```
