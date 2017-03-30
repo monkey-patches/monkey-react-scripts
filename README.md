@@ -173,13 +173,13 @@ related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509],
   - [x] addPlugin
   - [x] findLoader
   - [x] addBabelPlugins
-  - [ ] extract text webpack plugin
-  - [ ] addExclude
-  - [ ] addLoader
+  - [x] extract text webpack plugin
+  - [x] addExclude
+  - [x] addLoader
 - [ ] customize test runner (jest)
 - [ ] add more example
   - [ ] postcss
-  - [ ] scss support
+  - [x] scss support
   - [x] decorator support
   - [x] relay support
 
