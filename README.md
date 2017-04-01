@@ -63,7 +63,22 @@ snippets:
 - `createTextExtractor`
 - `getScssLoader`
 
-## Example 
+## Example
+Before use examples you should know what happen inside react-scripts webpack config.
+first see and read this files: 
+
+- `node_modules/react-scripts/config/webpack.config.dev.js`
+- `node_modules/react-scripts/config/webpack.config.prod.js`
+
+also you can log `webpackConfig` value.
+
+```js
+// webpack.monkey.js
+module.exports = function (webpackConfig, isDevelopment) {
+    console.log(webpackConfig)
+};
+```
+
 ### Webpack Visualizer
 I love visualization so I add [webpack-visualizer-plugin][webpack-visualizer] to my project
 - install plugin:
