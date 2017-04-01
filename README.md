@@ -52,12 +52,16 @@ I suggest you see [scripts](scripts) and [bin](bin) folders. (less than 100 line
 Note: returned value of `require` function is mutable. so you can mutate that before real build/start script.
 
 ## Snippets
-You can use [snippets](snippets/) if you want.
+You can use [snippets](snippets/cra-0.9.x.md) if you want.
 
 snippets:
 - `addPlugin`
 - `findLoader`
 - `addBabelPlugins`
+- `addLoader`
+- `addExclude`
+- `createTextExtractor`
+- `getScssLoader`
 
 ## Example 
 ### Webpack Visualizer
