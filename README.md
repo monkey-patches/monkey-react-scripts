@@ -172,6 +172,20 @@ similar code for less or stylus.
 
 related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509], [#1639][1639]
 
+## postcss config
+If you want change postcss config you can use this code. 
+```js
+module.exports = function (webpackConfig, isDevelopment) {
+    webpackConfig.postcss = function () {
+        const postcssFunc = webpackConfig.postcss;
+        return [
+            require('postcss-inline-rtl'),  // add new postcss plugin
+            ...postcssFunc()                // keep cra postcss plugins
+             ]
+    };
+};
+```
+
 ## TODOs
 - [ ] <del>add helpers</del> snippets
   - [x] addPlugin
@@ -182,7 +196,7 @@ related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509],
   - [x] addLoader
 - [ ] customize test runner (jest)
 - [ ] add more example
-  - [ ] postcss
+  - [x] postcss
   - [x] scss support
   - [x] decorator support
   - [x] relay support
