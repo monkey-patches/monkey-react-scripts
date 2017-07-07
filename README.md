@@ -52,16 +52,14 @@ I suggest you see [scripts](scripts) and [bin](bin) folders. (less than 100 line
 Note: returned value of `require` function is mutable. so you can mutate that before real build/start script.
 
 ## Snippets
-You can use [snippets](snippets/cra-0.9.x.md) if you want.
+You can use [snippets](snippets/cra-1.x.x.md) if you want.
 
 snippets:
 - `addPlugin`
-- `findLoader`
+- `findRule`
 - `addBabelPlugins`
 - `addLoader`
 - `addExclude`
-- `createTextExtractor`
-- `getScssLoader`
 
 ## Example
 Before use examples you should know what happen inside react-scripts webpack config.
@@ -122,19 +120,14 @@ If you love decorators, you can add decorator support:
 ```
 npm install --save-dev babel-plugin-transform-decorators-legacy
 ```
-- edit `webpack.monkey.js` like this (copy `findLoader`, `addBabelPlugins` from [snippets](snippets/cra-0.9.x.md)):
+- edit `webpack.monkey.js` like this (copy `findRule`, `addBabelPlugins` from [snippets](snippets/cra-1.x.x.md)):
 ```js
-function findLoader(config, callback) {
-    var index = config.module.loaders.findIndex(callback);
-    if (index === -1) throw Error('Loader not found');
-    return config.module.loaders[index];
+function findRule(webpackConfig, callback) {
+    /* snippet codes */
 }
 
 function addBabelPlugins(webpackConfig, plugins) {
-    var babelLoader = findLoader(webpackConfig, function (loader) {
-        return loader.loader === 'babel'
-    });
-    babelLoader.query.plugins = (babelLoader.query.plugins || []).concat(plugins);
+        /* snippet codes */
 }
 
 module.exports = function (webpackConfig, isDevelopment) {
@@ -146,26 +139,11 @@ module.exports = function (webpackConfig, isDevelopment) {
 related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411], [#1357][1357]
 
 ### Relay support
-- install `babel-relay-plugin`:
-```
-npm install --save-dev babel-relay-plugin
-```
-- add `relayPlugin.js` file:
-```js
-const getBabelRelayPlugin = require('babel-relay-plugin');
-const schemaData = require('./graphql.schema.json');
-const relayPlugin = getBabelRelayPlugin(schemaData.data);
-module.exports = relayPlugin;
-```
-- edit `webpack.monkey.js` like this:
-```js
-/* copy findLoader, addBabelPlugins from decorator example */
-module.exports = function (webpackConfig, isDevelopment) {
-    addBabelPlugins(webpackConfig, [
-        require.resolve('./relayPlugin.js')
-    ]);
-};
-```
+
+TODO
+
+you can find support for relay classic in [old readme][old-relay-support] and get some ideas
+
 related issues: [#462][462], [#662][662], [#900][900]
  
 ### scss support
@@ -177,10 +155,21 @@ npm install --save-dev node-sass sass-loader
 
 - edit `webpack.monkey.js` like this:
 ```js
-/* copy addExclude, findLoader, addLoader, getScssLoader, createTextExtractor from snippets */
+/* copy addExclude, findRule, addRule from snippets */
 module.exports = function (webpackConfig, isDevelopment) {
+    const cssRule = findRule(webpackConfig, (rule) => {
+        return ('' + rule.test === '' + /\.css$/)
+    });
+    const cssLoaders = isDevelopment ? cssRule.use : cssRule.loader;
+    cssLoaders[cssLoaders.length - 1].options.sourceMap = true; // add source option to postcss
+    const sassLoader = {loader: require.resolve('sass-loader'), options: {sourceMap: true}};
+    const sassLoaders = cssLoaders.concat(sassLoader);
+    const sassRule = {
+        test: /\.scss$/,
+        [isDevelopment ? 'use' : 'loader']: sassLoaders
+    };
     addExclude(webpackConfig, /\.scss$/);
-    addLoader(webpackConfig, getScssLoader(isDevelopment));
+    addRule(webpackConfig, sassRule)
 };
 ```
 similar code for less or stylus.
@@ -191,30 +180,34 @@ related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509],
 If you want change postcss config you can use this code. 
 ```js
 module.exports = function (webpackConfig, isDevelopment) {
-    webpackConfig.postcss = function () {
-        const postcssFunc = webpackConfig.postcss;
+    const cssRule = findRule(webpackConfig, (rule) => {
+        return ('' + rule.test === '' + /\.css$/)
+    });
+    const loaders = isDevelopment ? cssRule.use : cssRule.loader;
+    const postcssLoader = loaders[loaders.length - 1];
+    const postcssFunc = postcssLoader.options.plugins;
+    postcssLoader.options.plugins = () => {
         return [
             require('postcss-inline-rtl'),  // add new postcss plugin
             ...postcssFunc()                // keep cra postcss plugins
-             ]
+        ]
     };
 };
 ```
 
 ## TODOs
-- [ ] <del>add helpers</del> snippets
-  - [x] addPlugin
-  - [x] findLoader
-  - [x] addBabelPlugins
-  - [x] extract text webpack plugin
-  - [x] addExclude
-  - [x] addLoader
+
 - [ ] customize test runner (jest)
 - [ ] add more example
-  - [x] postcss
-  - [x] scss support
-  - [x] decorator support
-  - [x] relay support
+  - [ ] relay support
+
+## compatibility
+
+| react-scripts | monkey-react-scripts |
+|:-------------:|:--------------------:|
+|     0.9.x     |         0.0.5        |
+|     1.x.x     |         0.1.0        |
+
 
 ## Thanks
 @svrcekmichal for [configurable-react-scripts][configurable-react-scripts]
@@ -223,6 +216,7 @@ module.exports = function (webpackConfig, isDevelopment) {
 [webpack-visualizer]: https://github.com/chrisbateman/webpack-visualizer
 [configurable-react-scripts]: https://github.com/svrcekmichal/configurable-react-scripts
 [custom-react-scripts]: https://github.com/kitze/custom-react-scripts
+[old-relay-support]: https://github.com/monkey-patches/monkey-react-scripts/blob/b7380bbb873d637cdd6cf911de9f696b90b608fe/README.md#relay-support
 
 [107]: https://github.com/facebookincubator/create-react-app/issues/107
 [167]: https://github.com/facebookincubator/create-react-app/issues/167
