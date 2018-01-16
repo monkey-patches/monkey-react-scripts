@@ -7,17 +7,18 @@ In real project I copy some of them in other file and use require function:
 
 Add webpack plugin
 ```js
-function addPlugin(config, plugin) {
-    config.plugins.push(plugin);
+function addPlugin(webpackConfig, plugin) {
+    webpackConfig.plugins.push(plugin);
 }
 ```
 ## Find Rule
 
 ```js
 function findRule(webpackConfig, callback) {
-    const index = webpackConfig.module.rules.findIndex(callback);
+    const rules = webpackConfig.module.rules[1].oneOf;
+    const index = rules.findIndex(callback);
     if (index === -1) throw Error('Loader not found');
-    return webpackConfig.module.rules[index];
+    return rules[index]
 }
 ```
 
@@ -25,28 +26,18 @@ function findRule(webpackConfig, callback) {
 requirement: `findRule`
 ```js
 function addBabelPlugins(webpackConfig, plugins) {
-    const babelRule = findRule(webpackConfig, function (rule) {
-        return rule.loader && rule.loader.endsWith('babel-loader/lib/index.js');
+    // find babel rule
+    const babelRule = findRule(webpackConfig, (rule) => {
+        return ('' + rule.test === '' + /\.(js|jsx|mjs)$/)
     });
     babelRule.options.plugins = (babelRule.options.plugins || []).concat(plugins);
 }
 ```
 
-## addLoader
+## add Rule
 ```js
-function addRule(webpackConfig, rule) {
-    webpackConfig.module.rules.push(rule);
-}
-```
-
-## addExclude
-cra use file-loader for all unknown files. 
-requirement: `findRule`
-```js
-function addExclude(webpackConfig, regex) {
-    const excludeRule = findRule(webpackConfig, function(rule) {
-        return rule.loader && rule.loader.endsWith('file-loader/index.js')
-    });
-    excludeRule.exclude.push(regex);
+function addRule (webpackConfig, rule) {
+    const rules = webpackConfig.module.rules[1].oneOf;
+    rules.splice(rules.length - 1, 0, rule); // add before exclude rule
 }
 ```

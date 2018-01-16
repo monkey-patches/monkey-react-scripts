@@ -58,8 +58,7 @@ snippets:
 - `addPlugin`
 - `findRule`
 - `addBabelPlugins`
-- `addLoader`
-- `addExclude`
+- `addRule`
 
 ## Example
 Before use examples you should know what happen inside react-scripts webpack config.
@@ -76,6 +75,8 @@ module.exports = function (webpackConfig, isDevelopment) {
     console.log(webpackConfig)
 };
 ```
+
+Also you can find complete examples at [monkey-react-scripts-example] repo
 
 ### Webpack Visualizer
 I love visualization so I add [webpack-visualizer-plugin][webpack-visualizer] to my project
@@ -131,18 +132,27 @@ function addBabelPlugins(webpackConfig, plugins) {
 }
 
 module.exports = function (webpackConfig, isDevelopment) {
-    addBabelPlugins(webpackConfig, [
-        require.resolve('babel-plugin-transform-decorators-legacy')
-    ]);
+    addBabelPlugins(webpackConfig, ['transform-decorators-legacy']);
 };
 ```
 related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411], [#1357][1357]
 
 ### Relay support
+- install `babel-plugin-relay`
+```
+yarn add --dev babel-plugin-relay
+```
 
-TODO
+- edit `webpack.monkey.js`
+```js
 
-you can find support for relay classic in [old readme][old-relay-support] and get some ideas
+module.exports = function (webpackConfig, isDevelopment) {
+    addBabelPlugins(webpackConfig, ['relay']);
+};
+```
+and continue [relay documentation][relay-setup] steps.
+
+if you are using relay classic you can see [old readme][old-relay-support] and get some ideas.
 
 related issues: [#462][462], [#662][662], [#900][900]
  
@@ -155,21 +165,27 @@ npm install --save-dev node-sass sass-loader
 
 - edit `webpack.monkey.js` like this:
 ```js
-/* copy addExclude, findRule, addRule from snippets */
+/* copy findRule, addRule from snippets */
 module.exports = function (webpackConfig, isDevelopment) {
-    const cssRule = findRule(webpackConfig, (rule) => {
-        return ('' + rule.test === '' + /\.css$/)
-    });
-    const cssLoaders = isDevelopment ? cssRule.use : cssRule.loader;
-    cssLoaders[cssLoaders.length - 1].options.sourceMap = true; // add source option to postcss
-    const sassLoader = {loader: require.resolve('sass-loader'), options: {sourceMap: true}};
-    const sassLoaders = cssLoaders.concat(sassLoader);
-    const sassRule = {
-        test: /\.scss$/,
-        [isDevelopment ? 'use' : 'loader']: sassLoaders
-    };
-    addExclude(webpackConfig, /\.scss$/);
-    addRule(webpackConfig, sassRule)
+  // find css rule
+  const cssRule = findRule(webpackConfig, (rule) => {
+    return ('' + rule.test === '' + /\.css$/)
+  });
+  const cssLoaders = isDevelopment ? cssRule.use : cssRule.loader;
+
+  const postCssLoader = cssLoaders[cssLoaders.length - 1];
+  postCssLoader.options.sourceMap = true; // add source option to postcss
+
+  // add sass support
+  const sassLoader = {loader: require.resolve('sass-loader'), options: {sourceMap: true}};
+  const sassLoaders = cssLoaders.concat(sassLoader);
+
+  const sassRule = {
+    test: /\.scss$/,
+    [isDevelopment ? 'use' : 'loader']: sassLoaders,
+  };
+
+  addRule(webpackConfig, sassRule)
 };
 ```
 similar code for less or stylus.
@@ -179,27 +195,18 @@ related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509],
 ## postcss config
 If you want change postcss config you can use this code. 
 ```js
-module.exports = function (webpackConfig, isDevelopment) {
-    const cssRule = findRule(webpackConfig, (rule) => {
-        return ('' + rule.test === '' + /\.css$/)
-    });
-    const loaders = isDevelopment ? cssRule.use : cssRule.loader;
-    const postcssLoader = loaders[loaders.length - 1];
-    const postcssFunc = postcssLoader.options.plugins;
-    postcssLoader.options.plugins = () => {
-        return [
-            require('postcss-inline-rtl'),  // add new postcss plugin
-            ...postcssFunc()                // keep cra postcss plugins
-        ]
-    };
-};
+  // add rtl css support
+  const postCssFunction = postCssLoader.options.plugins
+  postCssLoader.options.plugins = () => {
+      return [...postCssFunction(), require('postcss-inline-rtl')]
+  }
 ```
 
 ## TODOs
 
 - [ ] customize test runner (jest)
-- [ ] add more example
-  - [ ] relay support
+- [x] add more example
+  - [x] relay support
 
 ## compatibility
 
@@ -216,6 +223,8 @@ module.exports = function (webpackConfig, isDevelopment) {
 [webpack-visualizer]: https://github.com/chrisbateman/webpack-visualizer
 [configurable-react-scripts]: https://github.com/svrcekmichal/configurable-react-scripts
 [custom-react-scripts]: https://github.com/kitze/custom-react-scripts
+[relay-setup]: https://facebook.github.io/relay/docs/en/installation-and-setup.html
+[monkey-react-scripts-example]: https://github.com/monkey-patches/monkey-react-scripts-example
 [old-relay-support]: https://github.com/monkey-patches/monkey-react-scripts/blob/b7380bbb873d637cdd6cf911de9f696b90b608fe/README.md#relay-support
 
 [107]: https://github.com/facebookincubator/create-react-app/issues/107
