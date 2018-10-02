@@ -1,8 +1,8 @@
-const fs = require('fs-extra');
-const path = require('path');
-
 process.env.BABEL_ENV = 'production';
 process.env.NODE_ENV = 'production';
+
+const fs = require('fs-extra');
+const path = require('path');
 
 require('react-scripts/config/env');
 

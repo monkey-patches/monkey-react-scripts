@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
+
+const fs = require('fs');
+const path = require('path');
 
 require('react-scripts/config/env');
 
