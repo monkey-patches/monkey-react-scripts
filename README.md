@@ -1,7 +1,7 @@
 # monkey-react-scripts
 Monkey react script runner: Customize react-scripts webpack config without eject or fork
 
-Many of you want to add small change to your webpack config created by create-react-app. but you don't want to eject. or
+Many of you want to add a small change to your webpack config created by create-react-app. but you don't want to eject. or
 use other scripts like [configurable-react-scripts][configurable-react-scripts] or 
 [custom-react-scripts][custom-react-scripts] because of update delay.
  
@@ -16,7 +16,7 @@ something, be completely sure what you doing!
 
 [source][configurable-react-scripts]
 ## Usage
-- use create-react-app and create your project, [more-detail][create-react-app]
+- use create-react-app and create your project, [more detail][create-react-app]
 ```
 npm install -g create-react-app
 
@@ -30,7 +30,7 @@ cd my-app/
 npm install monkey-react-scripts --save-dev --save-exact
 ```
 
-- create `webpack.monkey.js` in root of your project. you can modify webpack config here.
+- create `webpack.monkey.js` in the root of your project. you can modify webpack config here.
 ```js
 module.exports = function (webpackConfig, isDevelopment) {
     // mutate webpackConfig
@@ -61,13 +61,13 @@ snippets:
 - `addRule`
 
 ## Example
-Before use examples you should know what happen inside react-scripts webpack config.
-first see and read this files: 
+Before use examples, you should know what happens inside react-scripts webpack config.
+first, see and read this files: 
 
 - `node_modules/react-scripts/config/webpack.config.dev.js`
 - `node_modules/react-scripts/config/webpack.config.prod.js`
 
-also you can log `webpackConfig` value.
+also, you can log `webpackConfig` value.
 
 ```js
 // webpack.monkey.js
@@ -76,15 +76,15 @@ module.exports = function (webpackConfig, isDevelopment) {
 };
 ```
 
-Also you can find complete examples at [monkey-react-scripts-example] repo
+Also, you can find complete examples at [monkey-react-scripts-example] repo
 
 ### Webpack Visualizer
-I love visualization so I add [webpack-visualizer-plugin][webpack-visualizer] to my project
+I love visualization so, I add [webpack-visualizer-plugin][webpack-visualizer] to my project
 - install plugin:
 ```
 npm install webpack-visualizer-plugin --save-dev
 ```
-- add plugin to config (only at build)
+- add the plugin to config (only at build time)
 ```js
 // webpack.monkey.js
 var Visualizer = require('webpack-visualizer-plugin');
@@ -193,7 +193,7 @@ similar code for less or stylus.
 related issues: [#78][78], [#115][115], [#351][351], [#412][412], [#1509][1509], [#1639][1639]
 
 ## postcss config
-If you want change postcss config you can use this code. 
+If you want to change postcss config you can use this code. 
 ```js
   // add rtl css support
   const postCssFunction = postCssLoader.options.plugins
@@ -214,6 +214,7 @@ If you want change postcss config you can use this code.
 |:-------------:|:--------------------:|
 |     0.9.x     |         0.0.5        |
 |     1.x.x     |         0.1.0        |
+|     2.x.x     |         0.1.2        |
 
 
 ## Thanks
