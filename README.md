@@ -170,10 +170,11 @@ you can find more detail in [this file][css-patch]
 ## compatibility
 
 | react-scripts | monkey-react-scripts |
-|:-------------:|:--------------------:|
-|     0.9.x     |         0.0.5        |
-|     1.x.x     |         0.1.0        |
-|     2.x.x     |         0.1.2        |
+| :-----------: | :------------------: |
+|     0.9.x     |        0.0.5         |
+|     1.x.x     |        0.1.0         |
+| 2.0.0 - 2.1.1 |        0.1.2         |
+
 
 
 ## Thanks
