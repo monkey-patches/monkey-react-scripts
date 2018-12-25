@@ -22,14 +22,14 @@ function findRule(webpackConfig, callback) {
 }
 ```
 
-## Add Babel plugin
+## find Babel rule
 requirement: `findRule`
 ```js
-function addBabelPlugins(webpackConfig, plugins) {
+function findBabelRule(webpackConfig, plugins) {
     // find babel rule
     const babelRule = findRule(webpackConfig, (rule) => {
         return ('' + rule.test === '' + /\.(js|jsx)$/)
     });
-    babelRule.options.plugins = (babelRule.options.plugins || []).concat(plugins);
+    return babelRule;
 }
 ```

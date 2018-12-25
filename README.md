@@ -66,7 +66,7 @@ snippets:
 
 - `addPlugin`
 - `findRule`
-- `addBabelPlugins`
+- `findBabelRule`
 
 ## Example
 
@@ -86,6 +86,27 @@ module.exports = function(webpackConfig, isDevelopment) {
 ```
 
 Also, you can find complete examples at [monkey-react-scripts-example] repo
+
+### Enable `.babelrc`
+
+The `.babelrc` file is enabled for tests if you have `webpack.monkey.js` file. also, you can enable `.babelrc` for build and start:
+
+- edit `webpack.monkey.js` like this (copy `findRule`, `findBabelRule` from [snippets](snippets/cra-2.x.x.md)):
+
+```js
+function findRule(webpackConfig, callback) {
+  /* snippet codes */
+}
+
+function findBabelRule(webpackConfig, callback) {
+  /* snippet codes */
+}
+
+module.exports = function(webpackConfig, isDevelopment) {
+  const babelRule = findBabelRule(webpackConfig);
+  babelRule.options.babelrc = true;
+};
+```
 
 ### Webpack Visualizer
 
@@ -137,22 +158,12 @@ If you love decorators, you can add decorator support:
 npm install --save-dev @babel/plugin-proposal-decorators
 ```
 
-- edit `webpack.monkey.js` like this (copy `findRule`, `addBabelPlugins` from [snippets](snippets/cra-2.x.x.md)):
+- edit `.babelrc` like this:
 
-```js
-function findRule(webpackConfig, callback) {
-  /* snippet codes */
+```json
+{
+  "plugins": [["@babel/plugin-proposal-decorators", { "legacy": true }]]
 }
-
-function addBabelPlugins(webpackConfig, plugins) {
-  /* snippet codes */
-}
-
-module.exports = function(webpackConfig, isDevelopment) {
-  addBabelPlugins(webpackConfig, [
-    ["@babel/plugin-proposal-decorators", { legacy: true }]
-  ]);
-};
 ```
 
 related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411], [#1357][1357]
@@ -165,12 +176,12 @@ related issues: [#107][107], [#167][167], [#214][214], [#309][309], [#411][411],
 yarn add --dev babel-plugin-relay
 ```
 
-- edit `webpack.monkey.js`
+- edit `.babelrc` like this:
 
-```js
-module.exports = function(webpackConfig, isDevelopment) {
-  addBabelPlugins(webpackConfig, ["relay"]);
-};
+```json
+{
+  "plugins": ["relay"]
+}
 ```
 
 and continue [relay documentation][relay-setup] steps.
