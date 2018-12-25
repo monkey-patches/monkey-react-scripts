@@ -3,6 +3,8 @@ process.env.NODE_ENV = 'production';
 
 require('react-scripts/config/env');
 
+const patchModule = require('./utils/cache');
+
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -14,12 +16,11 @@ const originalConfigFactory = require('react-scripts/config/webpack.config');
 
 if (fs.existsSync(webpackMonkeyPath)) {
     console.log(chalk.yellow('WARNING! You are using modified webpack config!'));
-    const configPatch = require(webpackMonkeyPath)
-    const configModule = require.cache[require.resolve('react-scripts/config/webpack.config')];
-    configModule.exports = (...args) => {
+    const configPatch = require(webpackMonkeyPath);
+    patchModule('react-scripts/config/webpack.config', (...args) => {
         const webpackConfig = originalConfigFactory(...args);
         return configPatch(webpackConfig, true) || webpackConfig;
-    };
+    });
 }
 
 require('react-scripts/scripts/start');
