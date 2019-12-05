@@ -1,6 +1,6 @@
 {
   "name": "monkey-react-scripts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Monkey react script runner",
   "main": "index.js",
   "repository": "git@github.com:monkey-patches/monkey-react-scripts.git",
