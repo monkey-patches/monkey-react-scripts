@@ -60,7 +60,7 @@ Note: returned value of `require` function is mutable. so you can mutate that be
 
 ## Snippets
 
-You can use [snippets](snippets/cra-2.x.x.md) if you want.
+You can use [snippets](snippets/cra-4.x.x.md) if you want.
 
 snippets:
 
@@ -91,7 +91,7 @@ Also, you can find complete examples at [monkey-react-scripts-example] repo
 
 The `.babelrc` file is enabled for tests if you have `webpack.monkey.js` file. also, you can enable `.babelrc` for build and start:
 
-- edit `webpack.monkey.js` like this (copy `findRule`, `findBabelRule` from [snippets](snippets/cra-2.x.x.md)):
+- edit `webpack.monkey.js` like this (copy `findRule`, `findBabelRule` from [snippets](snippets/cra-4.x.x.md)):
 
 ```js
 function findRule(webpackConfig, callback) {
