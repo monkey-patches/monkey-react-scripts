@@ -16,8 +16,8 @@ const webpackMonkeyPath = path.resolve(appPath, 'webpack.monkey.js');
 require('react-scripts/config/jest/babelTransform.js')
 
 if (fs.existsSync(webpackMonkeyPath)) {
-    console.log(chalk.yellow('WARNING! .babelrc file is enabled!'));
-    const babelJest = require('babel-jest');
+  console.log(chalk.yellow('WARNING! .babelrc file is enabled!'));
+  const babelJest = require('babel-jest').default;
 
   const hasJsxRuntime = (() => {
     if (process.env.DISABLE_NEW_JSX_TRANSFORM === 'true') {
@@ -32,16 +32,20 @@ if (fs.existsSync(webpackMonkeyPath)) {
     }
   })();
 
-    patchModule('react-scripts/config/jest/babelTransform.js', babelJest.createTransformer({
-        presets: [
-          require.resolve('babel-preset-react-app'),
-          {
-            runtime: hasJsxRuntime ? 'automatic' : 'classic',
-          },
-        ],
-        babelrc: true,
-        configFile: false,
-    }));
+  const babelTransform = babelJest.createTransformer({
+    presets: [
+      [
+        require.resolve('babel-preset-react-app'),
+        {
+          runtime: hasJsxRuntime ? 'automatic' : 'classic',
+        },
+      ],
+    ],
+    babelrc: true,
+    configFile: false,
+  });
+
+  patchModule('react-scripts/config/jest/babelTransform.js', babelTransform);
 }
 
 require('react-scripts/scripts/test');

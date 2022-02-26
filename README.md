@@ -221,6 +221,7 @@ you can find more detail in [this file][css-patch]
 |     2.1.2     |        0.1.4         |
 |     3.0.0     |        0.2.0         |
 |     4.0.0     |        0.3.0         |
+|     5.0.0     |       5.0.0-0        |
 
 ## Thanks
 

@@ -14,6 +14,6 @@
     "monkey-react-scripts": "./bin/monkey-react-scripts.js"
   },
   "peerDependencies": {
-    "react-scripts": ">=2.0.0"
+    "react-scripts": ">=5.0.0"
   }
 }
